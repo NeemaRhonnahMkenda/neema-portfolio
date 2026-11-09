@@ -29,6 +29,7 @@ const contact = {
 /** Where a project card should send people. Mounted projects stay on this site. */
 function projectHref(p: Project) {
   if (p.mountUrl) return { href: `/${p.slug}`, label: "Open project", external: false };
+  if (p.liveUrl?.startsWith("/")) return { href: p.liveUrl, label: "Open project", external: false };
   if (p.liveUrl) return { href: p.liveUrl, label: "Visit site", external: true };
   if (p.repoUrl) return { href: p.repoUrl, label: "View code", external: true };
   return null;
@@ -237,7 +238,7 @@ export default function Home() {
                   >
                     <div className="mb-4 flex items-center justify-between font-mono text-xs text-muted">
                       <span>{p.year}</span>
-                      {p.mountUrl ? (
+                      {p.mountUrl || p.liveUrl?.startsWith("/") ? (
                         <span className="rounded-full bg-accent-soft px-2.5 py-1 text-accent">
                           Live demo
                         </span>

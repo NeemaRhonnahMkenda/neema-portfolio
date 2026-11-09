@@ -28,13 +28,33 @@ export type Project = {
    * When set, the project is mounted at /<slug> on this site.
    */
   mountUrl?: string;
-  /** Optional external link if the project is hosted somewhere else. */
+  /**
+   * Where the live project is. A path like "/waypoint" means it's served by this
+   * deployment (fetched from its own repo at build time); a full URL means it's hosted elsewhere.
+   */
   liveUrl?: string;
   year: number;
   featured?: boolean;
 };
 
 export const projects: Project[] = [
+  {
+    slug: "waypoint",
+    title: "Waypoint",
+    summary:
+      "A travel planner for families and friends: shared itineraries, places to stay, group budgets and who-owes-whom.",
+    highlights: [
+      "Plan together with edit and view links, no accounts needed",
+      "Day-by-day itinerary with live weather and a route map",
+      "Vote on destinations and places to stay",
+      "Budgets in any currency, settled by person or by family",
+    ],
+    stack: ["Next.js", "TypeScript", "Tailwind", "Upstash Redis", "Leaflet", "Recharts"],
+    repoUrl: "https://github.com/NeemaRhonnahMkenda/waypoint",
+    liveUrl: "/waypoint", // served by this deployment; code pulled from the repo above at build time
+    year: 2026,
+    featured: true,
+  },
   {
     slug: "the-archive",
     title: "The Archive",

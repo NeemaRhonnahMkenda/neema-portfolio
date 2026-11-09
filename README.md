@@ -85,3 +85,34 @@ To test a mounted project locally, temporarily set its `mountUrl` to
 
 The site intentionally shows email only. Phone numbers and referee details from the
 CV are left off: anything published here is scraped.
+
+
+## Projects served from their own repos
+
+Some projects keep their own GitHub repo but are served by **this** Vercel deployment,
+under a path on this site:
+
+| Project | Live at | Repo |
+| --- | --- | --- |
+| Waypoint | `/waypoint` | [NeemaRhonnahMkenda/waypoint](https://github.com/NeemaRhonnahMkenda/waypoint) |
+
+How it works:
+
+1. `npm run build` (what Vercel runs) first runs `scripts/fetch-projects.mjs`, which pulls
+   each project repo into `vendor/` (gitignored, never committed here).
+2. `app/waypoint/*` are one-line files that mount the project's pages and API from
+   `vendor/waypoint` (alias `@waypoint/*` in `tsconfig.json`).
+3. Pushing to the Waypoint repo triggers a GitHub Action that calls this project's
+   Vercel deploy hook, so the site rebuilds with the latest Waypoint automatically.
+
+One-time setup for auto-updates: Vercel → this project → Settings → Git → **Deploy Hooks**
+→ create one for `main`, then add its URL to the Waypoint repo as the Actions secret
+`PORTFOLIO_DEPLOY_HOOK`.
+
+Useful overrides (env vars for `npm run dev` / `npm run build`):
+
+- `WAYPOINT_REF=v1.2.0` pins a tag or commit instead of `main`.
+- `WAYPOINT_REPO=../waypoint` builds against a local checkout while you work on both.
+- `SKIP_PROJECT_FETCH=1` uses what's already in `vendor/` (offline).
+
+When a project adds an npm dependency, add it to this `package.json` too.

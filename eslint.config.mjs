@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Project repos fetched at build time are linted in their own repos.
+    "vendor/**",
   ]),
 ]);
 

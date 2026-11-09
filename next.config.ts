@@ -9,6 +9,12 @@ import { mountedProjects } from "./content/projects";
  */
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  // Waypoint is mounted at /waypoint (app/waypoint) from its own repo; tell it where it lives.
+  env: {
+    NEXT_PUBLIC_WAYPOINT_BASE: "/waypoint",
+    NEXT_PUBLIC_WAYPOINT_ROUTE_PREFIX: "/waypoint",
+    NEXT_PUBLIC_WAYPOINT_HOME_URL: "/",
+  },
   partialPrefetching: true,
   turbopack: {
     rules: {
@@ -35,6 +41,16 @@ const nextConfig: NextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+      // Waypoint: no framing; share pages and the API are never indexed or cached.
+      { source: "/waypoint/:path*", headers: [{ key: "X-Frame-Options", value: "DENY" }] },
+      { source: "/waypoint/t/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      {
+        source: "/waypoint/api/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          { key: "Cache-Control", value: "no-store" },
         ],
       },
     ];

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Waypoint (fetched into vendor/ at build time) brings its own Tailwind tokens. */
+@import "../vendor/waypoint/styles/theme.css";
 
 :root {
   --paper: #f7f5f0;
@@ -8,6 +10,7 @@
   --line: #e3e0d8;
   --accent: #123f8c;
   --accent-soft: #e6ecf7;
+  --font-display-face: var(--font-fraunces);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,7 +35,8 @@
   --color-accent-soft: var(--accent-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-fraunces);
+  /* Fraunces here; embedded projects (Waypoint) swap their own face in via --font-display-face */
+  --font-display: var(--font-display-face);
 }
 
 html {

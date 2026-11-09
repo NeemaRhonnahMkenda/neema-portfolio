@@ -6,6 +6,7 @@ import {
   skills,
 } from "@/content/profile";
 import { projects, type Project } from "@/content/projects";
+import { personJsonLd } from "@/lib/site";
 import MobileNav from "./components/MobileNav";
 import {
   ArrowUpRight,
@@ -123,6 +124,12 @@ export default function Home() {
 
   return (
     <>
+      {/* Structured data: tells search engines who this page is about and links her profiles. */}
+      <script
+        type="application/ld+json"
+        // Escape "<" so the JSON can never close the script tag early.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()).replace(/</g, "\\u003c") }}
+      />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"

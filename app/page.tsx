@@ -457,6 +457,7 @@ export default function Home() {
                 {[
                   ["GitHub", profile.links.github],
                   ["LinkedIn", profile.links.linkedin],
+                  ["Medium", profile.links.medium],
                   ["Behance", profile.links.behance],
                 ].map(([label, href]) => (
                   <a

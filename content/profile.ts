@@ -15,6 +15,7 @@ export const profile = {
     github: "https://github.com/neemarhonnahmkenda",
     linkedin: "https://www.linkedin.com/in/neema-mkenda-bb52b4200/",
     behance: "https://www.behance.net/neemarhonnahmkenda",
+    medium: "https://medium.com/@rhonnahmkenda",
   },
   intro:
     "I design and build responsive web applications end to end, from Figma prototypes to Supabase-backed production apps.",

@@ -7,6 +7,9 @@ export const profile = {
   location: "Nairobi, Kenya",
   location2: "Dar es Salaam, Tanzania",
   email: "nmkenda98@gmail.com",
+  phone: "+254 796 403 061",
+  phoneDigits: "254796403061",
+  availability: "Available for new roles and freelance work",
   links: {
     // TODO: fill these in
     github: "https://github.com/neemarhonnahmkenda",

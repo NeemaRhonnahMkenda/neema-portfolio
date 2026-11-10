@@ -12,7 +12,7 @@ export const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 export const SITE_TITLE = `${profile.name} | ${profile.role} in ${profile.location}`;
 
 export const SITE_DESCRIPTION =
-  `${profile.name} is a ${profile.role} based in ${profile.location} with 3+ years building responsive ` +
+  `${profile.name} is a ${profile.role} currently based in ${profile.location} with 3+ years building responsive ` +
   `web applications with React, Next.js, Vue, Node.js, Python and Supabase. Portfolio, projects and contact details.`;
 
 const allSkills = skills.flatMap((g) => g.items);

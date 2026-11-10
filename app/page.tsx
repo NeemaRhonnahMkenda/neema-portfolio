@@ -293,6 +293,7 @@ export default function Home() {
                               </span>
                               {live ? (
                                 <a
+                                target="_blank"
                                   href={live}
                                   className={`inline-flex min-h-10 items-center gap-1.5 rounded-full bg-ink px-4 text-sm font-medium text-paper transition hover:opacity-90 ${focus}`}
                                 >
@@ -321,6 +322,7 @@ export default function Home() {
                       {link ? (
                         <a
                           href={link.href}
+                          target="_blank"
                           {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                           className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-medium text-paper transition hover:opacity-90 ${focus}`}
                         >

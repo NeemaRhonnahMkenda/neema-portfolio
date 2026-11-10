@@ -115,7 +115,7 @@ export const projects: Project[] = [
     ],
     stack: ["Next.js", "React", "Supabase", "PostgreSQL", "Tailwind"],
     // GitHub only for now. Hosting is added later via mountUrl (see README).
-    repoUrl: "https://github.com/YOUR_GITHUB_USERNAME/the-archive", // TODO: real repo URL
+    repoUrl: "https://github.com/NeemaRhonnahMkenda/reading-tracker", // TODO: real repo URL
     year: 2026,
     featured: true,
   },

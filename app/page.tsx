@@ -322,7 +322,6 @@ export default function Home() {
                       {link ? (
                         <a
                           href={link.href}
-                          target="_blank"
                           {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                           className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-medium text-paper transition hover:opacity-90 ${focus}`}
                         >

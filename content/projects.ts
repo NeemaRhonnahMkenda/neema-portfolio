@@ -35,6 +35,23 @@ export type Project = {
   liveUrl?: string;
   year: number;
   featured?: boolean;
+  /**
+   * The same project built more than once (e.g. a Next.js rebuild and the Django original).
+   * Each version gets its own "Live" and "Code" buttons on the card.
+   * A version with `mountUrl` is proxied at /<slug> on this site, like a top-level mountUrl.
+   */
+  versions?: ProjectVersion[];
+};
+
+export type ProjectVersion = {
+  label: string;
+  stack: string;
+  repoUrl: string;
+  /** Path on this site, e.g. "/culinary-canvas" (served by this deployment). */
+  liveUrl?: string;
+  /** For proxied versions: path segment on this site and the server it lives on. */
+  slug?: string;
+  mountUrl?: string;
 };
 
 export const projects: Project[] = [
@@ -56,6 +73,36 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    slug: "culinary-canvas",
+    title: "Culinary Canvas",
+    summary:
+      "A recipe-sharing blog where people sign up, post recipes with photos, and browse by cooking method or search. Built twice: the original in Django, and a rebuild in Next.js.",
+    highlights: [
+      "Accounts with hashed passwords and httpOnly sessions; only authors can edit or delete",
+      "Photo uploads resized in the browser before upload",
+      "Search across titles, recipes and cooks; filter by baked, boiled or fried",
+      "Same features in two stacks, so you can compare the approaches",
+    ],
+    stack: ["Next.js", "TypeScript", "Upstash Redis", "Django", "Python", "SQLite"],
+    year: 2026,
+    versions: [
+      {
+        label: "Next.js rebuild",
+        stack: "Next.js · TypeScript · Redis",
+        liveUrl: "/culinary-canvas", // served by this deployment; code pulled from its repo at build time
+        repoUrl: "https://github.com/NeemaRhonnahMkenda/culinary-canvas",
+      },
+      {
+        label: "Original in Django",
+        stack: "Django · Python · SQLite",
+        slug: "culinary-canvas-django",
+        // Set CULINARY_DJANGO_URL in Vercel (e.g. https://neemamkenda.pythonanywhere.com) to switch the live demo on.
+        mountUrl: process.env.CULINARY_DJANGO_URL || undefined,
+        repoUrl: "https://github.com/NeemaRhonnahMkenda/CulinaryCanvasProject",
+      },
+    ],
+  },
+  {
     slug: "the-archive",
     title: "The Archive",
     summary:
@@ -68,14 +115,32 @@ export const projects: Project[] = [
     ],
     stack: ["Next.js", "React", "Supabase", "PostgreSQL", "Tailwind"],
     // GitHub only for now. Hosting is added later via mountUrl (see README).
-    repoUrl: "https://github.com/NeemaRhonnahMkenda/reading-tracker",
+    repoUrl: "https://github.com/YOUR_GITHUB_USERNAME/the-archive", // TODO: real repo URL
     year: 2026,
     featured: true,
   },
 ];
 
-export function mountedProjects() {
-  return projects.filter((p): p is Project & { mountUrl: string } =>
-    Boolean(p.mountUrl),
-  );
+/** Everything proxied from another server: top-level projects and individual versions. */
+export function mountedProjects(): { slug: string; mountUrl: string }[] {
+  const top = projects.filter((p) => p.mountUrl).map((p) => ({ slug: p.slug, mountUrl: p.mountUrl! }));
+  const versions = projects
+    .flatMap((p) => p.versions ?? [])
+    .filter((v) => v.slug && v.mountUrl)
+    .map((v) => ({ slug: v.slug!, mountUrl: v.mountUrl! }));
+  return [...top, ...versions];
+}
+
+/** Paths on this site where a live project can be visited (for the sitemap). */
+export function livePaths(): string[] {
+  const out: string[] = [];
+  for (const p of projects) {
+    if (p.mountUrl) out.push(`/${p.slug}`);
+    else if (p.liveUrl?.startsWith("/")) out.push(p.liveUrl);
+    for (const v of p.versions ?? []) {
+      if (v.liveUrl?.startsWith("/")) out.push(v.liveUrl);
+      else if (v.slug && v.mountUrl) out.push(`/${v.slug}`);
+    }
+  }
+  return [...new Set(out)];
 }

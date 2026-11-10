@@ -14,6 +14,7 @@ import { existsSync, mkdirSync, rmSync } from "node:fs";
 
 const PROJECTS = [
   { name: "waypoint", repo: "https://github.com/NeemaRhonnahMkenda/waypoint.git", ref: "main" },
+  { name: "culinary-canvas", repo: "https://github.com/NeemaRhonnahMkenda/culinary-canvas.git", ref: "main" },
 ];
 
 const git = (args, opts = {}) => execFileSync("git", args, { stdio: ["ignore", "pipe", "inherit"], ...opts }).toString().trim();

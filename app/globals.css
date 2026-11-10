@@ -1,6 +1,8 @@
 @import "tailwindcss";
 /* Waypoint (fetched into vendor/ at build time) brings its own Tailwind tokens. */
 @import "../vendor/waypoint/styles/theme.css";
+/* Culinary Canvas (fetched into vendor/ at build time), cc- prefixed tokens. */
+@import "../vendor/culinary-canvas/styles/theme.css";
 
 :root {
   --paper: #f7f5f0;

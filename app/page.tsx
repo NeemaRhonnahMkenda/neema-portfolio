@@ -245,7 +245,7 @@ export default function Home() {
                   >
                     <div className="mb-4 flex items-center justify-between font-mono text-xs text-muted">
                       <span>{p.year}</span>
-                      {p.mountUrl || p.liveUrl?.startsWith("/") ? (
+                      {p.mountUrl || p.liveUrl?.startsWith("/") || p.versions?.some((v) => v.liveUrl || v.mountUrl) ? (
                         <span className="rounded-full bg-accent-soft px-2.5 py-1 text-accent">
                           Live demo
                         </span>
@@ -281,9 +281,43 @@ export default function Home() {
                       ))}
                     </ul>
 
+                    {p.versions?.length ? (
+                      <ul className="mt-auto grid gap-3 pt-7" aria-label={`${p.title} versions`}>
+                        {p.versions.map((v) => {
+                          const live = v.liveUrl ?? (v.slug && v.mountUrl ? `/${v.slug}` : null);
+                          return (
+                            <li key={v.label} className="flex flex-wrap items-center gap-3 rounded-2xl border border-line p-3 pl-4">
+                              <span className="mr-auto min-w-0">
+                                <span className="block font-medium">{v.label}</span>
+                                <span className="block font-mono text-[11px] text-muted">{v.stack}</span>
+                              </span>
+                              {live ? (
+                                <a
+                                  href={live}
+                                  className={`inline-flex min-h-10 items-center gap-1.5 rounded-full bg-ink px-4 text-sm font-medium text-paper transition hover:opacity-90 ${focus}`}
+                                >
+                                  Live <ArrowUpRight />
+                                  <span className="sr-only"> {v.label} of {p.title}</span>
+                                </a>
+                              ) : null}
+                              <a
+                                href={v.repoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border border-line px-4 text-sm font-medium hover:border-ink ${focus}`}
+                              >
+                                <CodeIcon /> Code
+                                <span className="sr-only"> for {v.label} of {p.title}</span>
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : null}
+
                     {/* Plain <a>, not next/link: mounted projects are a different
                         Next.js app ("zone"), so navigation must be a full page load. */}
-                    <div className="mt-auto flex flex-wrap gap-3 pt-7">
+                    <div className={`flex flex-wrap gap-3 ${p.versions?.length ? "" : "mt-auto pt-7"}`}>
                       {link ? (
                         <a
                           href={link.href}

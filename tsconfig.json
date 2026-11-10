@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@waypoint/*": ["./vendor/waypoint/*"]
+      "@waypoint/*": ["./vendor/waypoint/*"],
+      "@culinary/*": ["./vendor/culinary-canvas/*"]
     }
   },
   "include": [

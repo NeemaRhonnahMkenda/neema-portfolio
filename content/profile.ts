@@ -6,7 +6,9 @@ export const profile = {
   role: "Full Stack Developer",
   location: "Nairobi, Kenya",
   location2: "Dar es Salaam, Tanzania",
-  email: "nmkenda98@gmail.com",
+  // Split so the address never appears as plain text in the page HTML (spam scrapers);
+  // the browser joins it when someone opens the page.
+  email: { user: "nmkenda98", domain: "gmail.com" },
   phone: "+254 796 403 061",
   phoneDigits: "254796403061",
   availability: "Available for new roles and freelance work",
@@ -16,6 +18,11 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/neema-mkenda-bb52b4200/",
     behance: "https://www.behance.net/neemarhonnahmkenda",
     medium: "https://medium.com/@rhonnahmkenda",
+    // Optional: paste a profile URL to show it on the site and in search data. Leave "" to hide.
+    x: "",
+    instagram: "",
+    youtube: "",
+    facebook: "",
   },
   intro:
     "I design and build responsive web applications end to end, from Figma prototypes to Supabase-backed production apps.",
@@ -25,6 +32,36 @@ export const profile = {
     "My UI/UX background means I am comfortable owning a feature from stakeholder requirements, through prototype and usability testing, to deployment.",
   ],
 };
+
+/** What I offer. Shown in the "What I do" section; also gives search engines more to read. */
+export const services: { title: string; body: string; points: string[] }[] = [
+  {
+    title: "Full stack web applications",
+    body:
+      "I build web applications from the database to the interface: data models, REST APIs, authentication and access control, and responsive React, Next.js or Vue front ends that work on any phone or laptop.",
+    points: ["Next.js and React apps", "Node.js, Python and Django back ends", "Supabase and PostgreSQL", "Deployment on Vercel"],
+  },
+  {
+    title: "UI/UX design and usability testing",
+    body:
+      "Before writing code I turn stakeholder requirements into Figma prototypes, then test them with real users. At EA Eye, usability fixes from this process cut support tickets by 30%.",
+    points: ["Figma prototypes", "Usability testing and UAT", "Design systems and reusable components", "Accessible, mobile-first layouts"],
+  },
+  {
+    title: "Website support, SEO and performance",
+    body:
+      "I keep live websites healthy: fixing bugs, updating content and layouts, improving page speed and search visibility, and supporting eCommerce and WordPress sites for businesses.",
+    points: ["eCommerce and WordPress", "Technical SEO", "Performance tuning", "Cross-browser testing"],
+  },
+];
+
+/** How a project with me usually runs. */
+export const workSteps = [
+  { step: "Understand", body: "We agree on the goal, the users and what success looks like." },
+  { step: "Design", body: "I sketch flows and a Figma prototype you can click through and comment on." },
+  { step: "Build", body: "I ship in small, tested pieces so you see progress every week." },
+  { step: "Launch and support", body: "I deploy, measure, and keep improving after launch." },
+];
 
 export type Role = {
   company: string;

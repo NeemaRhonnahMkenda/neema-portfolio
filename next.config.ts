@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_CC_HOME_URL: "/",
   },
   partialPrefetching: true,
+  experimental: {
+    // Put the CSS straight into the HTML so the first paint doesn't wait for a stylesheet download.
+    inlineCss: true,
+  },
   turbopack: {
     rules: {
       "*.css": {

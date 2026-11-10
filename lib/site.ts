@@ -9,11 +9,13 @@ export const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://neema-portfolio-pearl.vercel.app");
 
-export const SITE_TITLE = `${profile.name} | ${profile.role} in ${profile.location}`;
+/** Kept within 50–60 characters so search results show it in full. */
+export const SITE_TITLE = `${profile.name} | ${profile.role}, Nairobi`;
 
+/** Kept within 120–160 characters so search results don't cut it off. */
 export const SITE_DESCRIPTION =
-  `${profile.name} is a ${profile.role} currently based in ${profile.location} with 3+ years building responsive ` +
-  `web applications with React, Next.js, Vue, Node.js, Python and Supabase. Portfolio, projects and contact details.`;
+  `${profile.name}, ${profile.role} in ${profile.location}. I build web applications with React, ` +
+  `Next.js, Node.js and Python. See projects and get in touch.`;
 
 const allSkills = skills.flatMap((g) => g.items);
 
@@ -29,6 +31,13 @@ export const KEYWORDS = [
   "React developer Kenya",
   ...allSkills,
 ];
+
+const ADDRESS = {
+  "@type": "PostalAddress",
+  addressLocality: "Nairobi",
+  addressRegion: "Nairobi County",
+  addressCountry: "KE",
+};
 
 /**
  * schema.org structured data. This is what lets Google understand that this page
@@ -51,9 +60,8 @@ export function personJsonLd() {
         description: profile.intro,
         url: SITE_URL,
         image: `${SITE_URL}/opengraph-image`,
-        email: `mailto:${profile.email}`,
         telephone: profile.phone,
-        address: { "@type": "PostalAddress", addressLocality: "Nairobi", addressCountry: "KE" },
+        address: ADDRESS,
         homeLocation: { "@type": "Place", name: profile.location },
         alumniOf: { "@type": "CollegeOrUniversity", name: education.school },
         ...(current ? { worksFor: { "@type": "Organization", name: current.company } } : {}),
@@ -64,6 +72,24 @@ export function personJsonLd() {
           recognizedBy: { "@type": "Organization", name: c.issuer },
         })),
         sameAs: Object.values(profile.links).filter((u) => u && !u.includes("YOUR_")),
+      },
+      {
+        // Her freelance offering, so search engines can show it for local searches
+        // ("web developer Nairobi"). ProfessionalService is a kind of LocalBusiness.
+        "@type": "ProfessionalService",
+        "@id": `${SITE_URL}/#service`,
+        name: `${profile.shortName}, ${profile.role}`,
+        description: "Freelance web application development, UI/UX design and website support.",
+        url: SITE_URL,
+        image: `${SITE_URL}/opengraph-image`,
+        telephone: profile.phone,
+        address: ADDRESS,
+        areaServed: [
+          { "@type": "Country", name: "Kenya" },
+          { "@type": "Country", name: "Tanzania" },
+        ],
+        founder: { "@id": `${SITE_URL}/#person` },
+        knowsAbout: allSkills,
       },
       {
         "@type": "WebSite",

@@ -3,10 +3,13 @@ import {
   education,
   experience,
   profile,
+  services,
   skills,
+  workSteps,
 } from "@/content/profile";
 import { projects, type Project } from "@/content/projects";
 import { personJsonLd } from "@/lib/site";
+import { EmailLink, EmailText } from "./components/Email";
 import MobileNav from "./components/MobileNav";
 import {
   ArrowUpRight,
@@ -24,8 +27,21 @@ const contact = {
   whatsapp: `https://wa.me/${profile.phoneDigits}?text=${encodeURIComponent(
     `Hi ${profile.shortName.split(" ")[0]}, I found your portfolio and would like to talk.`,
   )}`,
-  mail: `mailto:${profile.email}`,
 };
+
+/** Social profiles that have a URL set in content/profile.ts. */
+const socials = (
+  [
+    ["GitHub", profile.links.github],
+    ["LinkedIn", profile.links.linkedin],
+    ["Medium", profile.links.medium],
+    ["Behance", profile.links.behance],
+    ["X", profile.links.x],
+    ["Instagram", profile.links.instagram],
+    ["YouTube", profile.links.youtube],
+    ["Facebook", profile.links.facebook],
+  ] as const
+).filter(([, href]) => href);
 
 /** Where a project card should send people. Mounted projects stay on this site. */
 function projectHref(p: Project) {
@@ -37,6 +53,7 @@ function projectHref(p: Project) {
 }
 
 const nav = [
+  { href: "#services", label: "Services" },
   { href: "#projects", label: "Projects" },
   { href: "#experience", label: "Experience" },
   { href: "#about", label: "About" },
@@ -182,7 +199,7 @@ export default function Home() {
 
               <h1 className="font-display text-4xl leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
                 Hi, I&apos;m {profile.shortName}.
-                <span className="mt-2 block text-muted">I build web apps people enjoy using.</span>
+                <span className="mt-2 block text-muted">A full stack developer building web apps people enjoy using.</span>
               </h1>
 
               <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:mt-8 sm:text-lg">
@@ -232,9 +249,45 @@ export default function Home() {
             </dl>
           </section>
 
+          {/* Services */}
+          <section id="services" className="scroll-mt-20 py-14 sm:py-20">
+            <SectionLabel
+              n="01"
+              title="What I do"
+              kicker="Full stack web development, UI/UX design and website support for teams in Kenya, Tanzania and remote."
+            />
+            <div className="grid gap-5 md:grid-cols-3">
+              {services.map((sv) => (
+                <article key={sv.title} className="flex flex-col rounded-3xl border border-line bg-card p-5 sm:p-7">
+                  <h3 className="font-display text-xl tracking-tight sm:text-2xl">{sv.title}</h3>
+                  <p className="mt-3 leading-relaxed text-muted">{sv.body}</p>
+                  <ul className="mt-5 space-y-2 text-sm">
+                    {sv.points.map((pt) => (
+                      <li key={pt} className="flex gap-2.5">
+                        <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-accent" />
+                        <span>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+
+            <h3 className="mt-14 mb-5 font-display text-xl tracking-tight sm:text-2xl">How I work</h3>
+            <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {workSteps.map((w, i) => (
+                <li key={w.step} className="rounded-2xl border border-line p-5">
+                  <p className="font-mono text-xs text-accent">0{i + 1}</p>
+                  <p className="mt-2 font-medium">{w.step}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted">{w.body}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
           {/* Projects */}
           <section id="projects" className="scroll-mt-20 py-14 sm:py-20">
-            <SectionLabel n="01" title="Projects" kicker="Things I've designed and built recently." />
+            <SectionLabel n="02" title="Projects" kicker="Web applications I've designed and built recently." />
             <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
               {sorted.map((p) => {
                 const link = projectHref(p);
@@ -322,7 +375,8 @@ export default function Home() {
                       {link ? (
                         <a
                           href={link.href}
-                          {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                          target="_blank"
+                          rel={link.external ? "noopener noreferrer" : undefined}
                           className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-medium text-paper transition hover:opacity-90 ${focus}`}
                         >
                           {link.href === p.repoUrl ? <CodeIcon /> : null}
@@ -356,7 +410,7 @@ export default function Home() {
 
           {/* Experience */}
           <section id="experience" className="scroll-mt-20 py-14 sm:py-20">
-            <SectionLabel n="02" title="Experience" kicker="Where I've worked and what I delivered." />
+            <SectionLabel n="03" title="Experience" kicker="Full stack, frontend and UI/UX roles, and what I delivered." />
             <ol className="relative border-l border-line sm:border-l-0">
               {experience.map((r) => {
                 const current = r.period.includes("Present");
@@ -400,7 +454,7 @@ export default function Home() {
 
           {/* About + skills */}
           <section id="about" className="scroll-mt-20 py-14 sm:py-20">
-            <SectionLabel n="03" title="About" />
+            <SectionLabel n="04" title="About me" />
             <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
               <div className="space-y-4 text-base leading-relaxed sm:text-lg">
                 {profile.about.map((p) => (
@@ -455,7 +509,7 @@ export default function Home() {
 
           {/* Contact */}
           <section id="contact" className="scroll-mt-20 py-14 sm:py-20">
-            <SectionLabel n="04" title="Contact" />
+            <SectionLabel n="05" title="Contact" />
             <div className="rounded-3xl bg-ink p-6 text-paper sm:p-12">
               <p className="font-display text-3xl leading-tight tracking-tight sm:text-5xl">
                 Have a project or a role in mind?
@@ -469,7 +523,6 @@ export default function Home() {
                 {[
                   { href: contact.tel, icon: <PhoneIcon className="size-5" />, title: "Call", detail: profile.phone },
                   { href: contact.whatsapp, icon: <ChatIcon className="size-5" />, title: "WhatsApp", detail: "Send a message", external: true },
-                  { href: contact.mail, icon: <MailIcon className="size-5" />, title: "Email", detail: profile.email },
                 ].map((c) => (
                   <a
                     key={c.title}
@@ -486,15 +539,32 @@ export default function Home() {
                     </span>
                   </a>
                 ))}
+                <EmailLink className={`flex min-w-0 items-center gap-4 rounded-2xl bg-paper/10 p-4 transition hover:bg-paper/20 ${focus}`}>
+                  <span className="grid size-11 shrink-0 place-items-center rounded-full bg-paper text-ink">
+                    <MailIcon className="size-5" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-medium">Email</span>
+                    <span className="block truncate text-sm opacity-75">
+                      <EmailText />
+                    </span>
+                  </span>
+                </EmailLink>
               </div>
 
+              <address className="mt-6 flex items-start gap-2 text-sm not-italic opacity-75">
+                <PinIcon className="mt-0.5 size-4 shrink-0" />
+                <span>
+                  {profile.location} (East Africa Time, UTC+3)
+                  {profile.location2 ? ` · also working from ${profile.location2}` : ""} · Tel:{" "}
+                  <a href={contact.tel} className="underline-offset-4 hover:underline">
+                    {profile.phone}
+                  </a>
+                </span>
+              </address>
+
               <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-paper/20 pt-6 text-sm">
-                {[
-                  ["GitHub", profile.links.github],
-                  ["LinkedIn", profile.links.linkedin],
-                  ["Medium", profile.links.medium],
-                  ["Behance", profile.links.behance],
-                ].map(([label, href]) => (
+                {socials.map(([label, href]) => (
                   <a
                     key={label}
                     href={href}
@@ -511,7 +581,7 @@ export default function Home() {
         </main>
 
         <footer className="flex flex-col gap-2 border-t border-line py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>© {profile.name}</p>
+          <p>© {profile.name} · {profile.role} in {profile.location}</p>
           <a href="#top" className={`hover:text-ink ${focus}`}>
             Back to top ↑
           </a>
@@ -538,12 +608,9 @@ export default function Home() {
           >
             <ChatIcon /> WhatsApp
           </a>
-          <a
-            href={contact.mail}
-            className={`inline-flex min-h-12 items-center justify-center gap-1.5 rounded-full border border-line bg-card text-sm font-medium ${focus}`}
-          >
+          <EmailLink className={`inline-flex min-h-12 items-center justify-center gap-1.5 rounded-full border border-line bg-card text-sm font-medium ${focus}`}>
             <MailIcon /> Email
-          </a>
+          </EmailLink>
         </div>
       </div>
     </>
